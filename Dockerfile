@@ -15,6 +15,9 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     libpq-dev \
     chromium \
+    fonts-noto-core \
+    fonts-noto-cjk \
+    fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
 
@@ -58,15 +61,10 @@ WORKDIR /var/www
 
 
 # -----------------------------------------
-# Copy Composer Files
+# Composer Dependencies
 # -----------------------------------------
 
 COPY composer.json composer.lock ./
-
-
-# -----------------------------------------
-# Install PHP Dependencies
-# -----------------------------------------
 
 RUN composer install \
     --no-dev \
@@ -84,7 +82,7 @@ COPY . .
 
 
 # -----------------------------------------
-# Run Composer Scripts
+# Composer Autoload
 # -----------------------------------------
 
 RUN composer dump-autoload --optimize
@@ -105,10 +103,12 @@ RUN npm run build
 
 
 # -----------------------------------------
-# Puppeteer
+# Puppeteer / Chromium
 # -----------------------------------------
 
 ENV PUPPETEER_SKIP_DOWNLOAD=true
+
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 
 # -----------------------------------------

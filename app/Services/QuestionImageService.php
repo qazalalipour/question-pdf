@@ -19,12 +19,7 @@ class QuestionImageService
         }
 
         Browsershot::html($html)
-            ->setChromePath(
-                env(
-                    'CHROME_PATH',
-                    '/usr/bin/chromium'
-                )
-            )
+           ->setChromePath('/usr/bin/chromium')
             ->noSandbox()
             ->waitUntilNetworkIdle()
             ->timeout(60)
